@@ -1,9 +1,14 @@
 import { Modal } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import CrossSvg from "../Assets/Icons/CrossSvg";
+import getMovieDetails from "../Services/getMovieDetails";
 
 const CustomModal = ({ visible = true, onCancel, movieDetails }) => {
-  const { title, ratings, description } = movieDetails;
+  const { title, popularity, overview } = movieDetails;
+
+  useEffect(() => {
+    getMovieDetails();
+  }, []);
 
   if (!visible) {
     return <></>;
@@ -33,8 +38,8 @@ const CustomModal = ({ visible = true, onCancel, movieDetails }) => {
           </div>
           <div>
             <p>{title}</p>
-            <p>{description}</p>
-            <p>{ratings}</p>
+            <p>{overview}</p>
+            <p>{popularity}</p>
           </div>
         </div>
       )}
