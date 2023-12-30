@@ -1,13 +1,10 @@
-import logo from "./logo.svg";
-import "./App.css";
+import MoveifixScreen from "./Modules/Moviefix/MoveifixScreen";
+import "./globals.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Welcome to Moviefix</p>
-      </header>
+    <div className="bg-black">
+      <MoveifixScreen />
     </div>
   );
 }
