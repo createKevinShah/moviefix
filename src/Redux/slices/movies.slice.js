@@ -1,13 +1,19 @@
 /* eslint-disable array-callback-return */
 import { createSlice } from "@reduxjs/toolkit";
-import { getFilteredMovies, getGenres, getMoviesList } from "../APIs/moviesAPI";
+import {
+  getFilteredMovies,
+  getGenres,
+  getMoviesDetails,
+  getMoviesList,
+} from "../APIs/moviesAPI";
 import checkDuplicates from "../../Utils/checkDuplicates";
 import getReleaseYear from "../../Utils/getReleaseYear";
 
 const initialState = {
   loading: false,
   moviesList: [],
-  filteredList: [],
+  currentMovie: [],
+  currentMovieDetails: [],
   previousFetchYear: 2012,
   nextFetchYear: 2012,
   defaultYear: 2012,
@@ -15,9 +21,7 @@ const initialState = {
   selectedGenres: [],
   wasFilterApplied: false,
   searchQuery: null,
-  fetchInReverseOrder: false,
   enableEntryFetch: true,
-  fetchOlderMoviesCTA: false,
 };
 
 export const moviesSlice = createSlice({
@@ -39,59 +43,29 @@ export const moviesSlice = createSlice({
 
       const { results } = action.payload;
       const isDuplicate = checkDuplicates(state.moviesList, results);
-      const releaseYear = getReleaseYear(results);
+      const releaseYear = state.enableEntryFetch
+        ? getReleaseYear(results)
+        : null;
 
-      // const setToEmpty = releaseYear === state.defaultYear;
-
-      // const updatedMovieList = releaseYear < state.defaultYear;
       const temp = {
-        year: state.enableEntryFetch ? releaseYear : null,
+        year: releaseYear,
         list: results,
       };
 
-      console.log(isDuplicate, temp, "check values");
-
       let updatedMovieList = state.moviesList;
-      if (releaseYear < state.defaultYear) {
+      if (releaseYear === null) {
+        updatedMovieList = [temp];
+      } else if (releaseYear < state.defaultYear) {
         updatedMovieList.unshift(temp);
       } else if (releaseYear > state.defaultYear) {
         updatedMovieList.push(temp);
       } else {
         updatedMovieList = [temp];
       }
-      // if (state.fetchInReverseOrder) {
-      //   if (!isDuplicate) {
-      //     const temp = { year: releaseYear, list: results };
-      //     state.moviesList.unshift(temp);
-      //   }
-      // }
-      // else {
-      // if (state.enableEntryFetch) {
+
       if (!isDuplicate) {
-        // state.moviesList = [
-        //   ...(setToEmpty ? [] : state.moviesList),
-        //   { year: releaseYear, list: results },
-        // ];
         state.moviesList = [...updatedMovieList];
       }
-      // }
-      //  else {
-      //   state.moviesList = [{ year: null, list: results }];
-      // }
-
-      // if (state.selectedGenres.length > 0) {
-      //   state.moviesList = [{ year: null, list: results }];
-      // } else if (state.searchQuery === "") {
-      //   state.moviesList = [{ year: releaseYear, list: results }];
-      // } else {
-      //   if (!isDuplicate) {
-      //     state.moviesList = [
-      //       ...state.moviesList,
-      //       { year: releaseYear, list: results },
-      //     ];
-      //   }
-      // }
-      // }
     });
     builder.addCase(getMoviesList.rejected, (state, action) => {
       state.loading = false;
@@ -130,6 +104,23 @@ export const moviesSlice = createSlice({
       state.moviesList = [{ year: null, list: results }];
     });
     builder.addCase(getFilteredMovies.rejected, (state, action) => {
+      state.loading = false;
+      state.status = "rejected";
+      state.error = action.error;
+    });
+
+    // get Movie Details
+    builder.addCase(getMoviesDetails.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getMoviesDetails.fulfilled, (state, action) => {
+      state.loading = false;
+      state.status = "fulfilled";
+
+      console.log(action.payload, "check movie details payload");
+      state.currentMovieDetails = action.payload;
+    });
+    builder.addCase(getMoviesDetails.rejected, (state, action) => {
       state.loading = false;
       state.status = "rejected";
       state.error = action.error;

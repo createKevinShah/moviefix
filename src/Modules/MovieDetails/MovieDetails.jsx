@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import getMovieDetails from "../../Services/getMovieDetails";
 import { Spin } from "antd";
 import CustomButton from "../../Components/CustomButton";
 import BlankProfile from "../../Assets/Icons/BlankProfile";
 import RuntimeSvg from "../../Assets/Icons/RuntimeSvg";
 import useRuntime from "../../Hooks/useRuntime";
 import Header from "../../Layout/Header";
+import { getMoviesDetails } from "../../Redux/APIs/moviesAPI";
+import { useDispatch, useSelector } from "react-redux";
 
 const Cast = ({ credits }) => {
   return (
@@ -47,11 +48,11 @@ const MovieDetails = () => {
   const searchParams = useParams();
   const { id } = searchParams;
 
-  const [loading, setLoading] = useState(false);
-  const [movieDetails, setMovieDetails] = useState([]);
+  const dispatch = useDispatch();
+  const { loading, currentMovieDetails } = useSelector((state) => state.movies);
 
   const { title, tagline, runtime, poster_path, overview, genres, credits } =
-    movieDetails;
+    currentMovieDetails;
 
   const getDirector = (credits) => {
     const director = credits?.crew?.find(
@@ -64,7 +65,7 @@ const MovieDetails = () => {
   const totalRuntime = useRuntime(runtime);
 
   useEffect(() => {
-    getMovieDetails(setMovieDetails, id, setLoading);
+    dispatch(getMoviesDetails({ movieId: id }));
   }, [id]);
 
   return (
@@ -119,13 +120,6 @@ const MovieDetails = () => {
                     </div>
                   );
                 })}
-                {/* {genres?.map((genre) => {
-                  return (
-                    <div className="" key={genre.id}>
-                      <CustomButton text={genre.name} disableSelection />
-                    </div>
-                  );
-                })} */}
               </div>
             </div>
           </div>

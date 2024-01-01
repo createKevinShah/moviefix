@@ -32,7 +32,9 @@ const CustomCard = ({ title, image, ratings, onClick = () => {} }) => {
           </p>
           <div className="flex items-center gap-x-2">
             <img src="/ratings.svg" className="w-5 h-5" alt="ratings" />
-            <p className="text-white font-medium text-base">{ratings}</p>
+            <p className="text-white font-medium text-base">
+              {ratings.toFixed(1)}
+            </p>
           </div>
         </div>
       </div>

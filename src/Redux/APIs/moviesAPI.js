@@ -26,6 +26,27 @@ export const getMoviesList = createAsyncThunk(
   },
 );
 
+export const getMoviesDetails = createAsyncThunk(
+  "movies/getMoviesDetails",
+  async ({ movieId }, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_MOVIE_API_URL}/movie/${movieId}`,
+        {
+          params: {
+            api_key: process.env.REACT_APP_MOVIE_API_KEY,
+            append_to_response: "credits",
+            language: "en",
+          },
+        },
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
+
 export const getGenres = createAsyncThunk(
   "movies/getGenres",
   async (params, { rejectWithValue }) => {

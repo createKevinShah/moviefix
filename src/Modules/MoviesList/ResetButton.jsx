@@ -5,16 +5,10 @@ import { Tooltip } from "antd";
 import ResetSvg from "../../Assets/Icons/ResetSvg";
 
 const ResetButton = () => {
-  // const { setMovies, setSelectedGenre } = useContext(MyContext);
-
   const dispatch = useDispatch();
 
   const handleReset = () => {
-    dispatch(updateMovies({ key: "moviesList", value: [] }));
-    dispatch(updateMovies({ key: "genres", value: [] }));
-
-    // setMovies([]);
-    // setSelectedGenre([]);
+    dispatch(updateMovies({ key: "selectedGenres", value: [] }));
   };
 
   return (

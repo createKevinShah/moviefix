@@ -9,7 +9,7 @@ const MovieListHeader = ({ movieListRef }) => {
       <CustomSearch movieListRef={movieListRef} />
       <div className="flex justify-between">
         <div className="w-[91%] md:w-[95%]">
-          <Filters />
+          <Filters movieListRef={movieListRef} />
         </div>
         <ResetButton />
       </div>

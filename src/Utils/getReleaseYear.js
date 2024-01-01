@@ -1,7 +1,8 @@
-import dayjs from "dayjs";
-
 const getReleaseYear = (moviesList) => {
-  return parseInt(dayjs(moviesList[0].release_date).format("YYYY"));
+  const date = new Date(moviesList[0].release_date);
+  const year = date.getFullYear();
+
+  return year;
 };
 
 export default getReleaseYear;
