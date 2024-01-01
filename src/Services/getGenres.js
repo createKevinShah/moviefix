@@ -10,7 +10,7 @@ const getGenres = (setGenres) => {
         },
       })
       .then((res) => {
-        console.log(res.data.genres);
+        // console.log(res.data.genres);
         setGenres(res.data.genres);
       });
   } catch (err) {

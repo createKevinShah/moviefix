@@ -6,14 +6,20 @@ const Header = () => {
 
   return (
     <div className="fixed top-0 left-0 right-0 h-[50px] bg-black z-20">
-      <div className="primary-layout p-4 bg-black">
+      <div className="primary-layout bg-black">
         <div
           role="button"
-          className="flex items-center justify-start gap-x-1 w-[162px]"
+          className="flex items-center justify-start w-[162px]"
           onClick={() => navigate("/")}
         >
-          <p className="text-red-100 font-semibold text-3xl">Moviefix</p>
-          <img src="/popcorn-icon.png" className="w-10 h-10" alt="Moviefix" />
+          <p className="text-red-100 font-semibold text-3xl pl-4 py-4">
+            Moviefix
+          </p>
+          <img
+            src="/moviefix-logo.png"
+            className="w-[90px] h-[90px] ml-[-10px]"
+            alt="Moviefix"
+          />
         </div>
       </div>
     </div>

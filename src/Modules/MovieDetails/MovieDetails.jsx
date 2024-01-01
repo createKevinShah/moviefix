@@ -10,7 +10,7 @@ import Header from "../../Layout/Header";
 
 const Cast = ({ credits }) => {
   return (
-    <div className="flex flex-wrap w-full gap-y-3">
+    <div className="flex flex-wrap w-full bg-black gap-y-3">
       {credits?.cast?.map((person) => {
         return (
           <div
@@ -76,27 +76,31 @@ const MovieDetails = () => {
             <Spin spinning />
           </div>
         ) : (
-          <div className="flex items-start gap-x-10 text-grey-10 font-normal">
-            <div className="rounded-lg w-[50%]">
+          <div className="flex flex-col bg-black md:flex-row items-start px-4 md:px-0 gap-x-10 text-grey-10 font-normal">
+            <div className="rounded-lg w-full md:w-[50%] h-full">
               <img
                 src={`${process.env.REACT_APP_POSTER_URL}${poster_path}`}
                 alt={title}
-                className="w-full h-[80vh] object-cover rounded-lg"
+                className="w-[90vw] h-[60vh] md:h-[80vh] object-conver rounded-lg"
               />
             </div>
 
-            <div className="w-[50%] h-[80vh] flex flex-col gap-y-2">
+            <div className="w-full mt-4 md:mt-0 md:w-[50%] h-full md:h-[80vh] flex flex-col gap-y-2">
               <div>
                 <h2 className="font-medium text-3xl">{title}</h2>
-                <h3 className="mt-2 font-light text-xl italic">{tagline}</h3>
-                <div className="flex items-center gap-x-3 mt-2">
+                <h3 className="mt-2 font-light text-xl italic text-grey-50">
+                  {tagline}
+                </h3>
+                <div className="flex items-center gap-x-2 mt-3">
                   <RuntimeSvg className="text-grey-50" />
-                  <p className="text-sm">{totalRuntime}</p>
+                  <p className="text-sm font-light">{totalRuntime}</p>
                 </div>
               </div>
               <div className="mt-3">
                 <p className="font-semibold text-xl">Description :</p>
-                <p className="text-base pt-1">{overview}</p>
+                <p className="text-base pt-1 text-justify md:text-left">
+                  {overview}
+                </p>
               </div>
               <div className="mt-3">
                 <p className="font-semibold text-xl">Director :</p>
@@ -107,14 +111,21 @@ const MovieDetails = () => {
                 <Cast credits={credits} />
               </div>
               <p className="font-semibold text-xl mt-2">Genres :</p>
-              <div className="flex items-center gap-x-4">
+              <div className="flex items-center flex-wrap gap-4 mb-8 md:mb-0">
                 {genres?.map((genre) => {
                   return (
-                    <div key={genre.id}>
+                    <div className="" key={genre.id}>
                       <CustomButton text={genre.name} disableSelection />
                     </div>
                   );
                 })}
+                {/* {genres?.map((genre) => {
+                  return (
+                    <div className="" key={genre.id}>
+                      <CustomButton text={genre.name} disableSelection />
+                    </div>
+                  );
+                })} */}
               </div>
             </div>
           </div>
