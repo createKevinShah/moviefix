@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Header from "../../Layout/Header";
 import MovieList from "./MovieList";
 import MovieListHeader from "./MovieListHeader";
@@ -12,6 +12,8 @@ import { Footer } from "antd/es/layout/layout";
 const MoveifixScreen = () => {
   const dispatch = useDispatch();
   const { defaultYear, selectedGenres } = useSelector((state) => state.movies);
+
+  const movieListRef = useRef();
 
   const genreIds = useGenreIds(selectedGenres);
 
@@ -29,8 +31,8 @@ const MoveifixScreen = () => {
     <div className="bg-black">
       <Header />
       <div className="h-[100vh] max-h-[100vh] overflow-hidden relative">
-        <MovieListHeader />
-        <MovieList />
+        <MovieListHeader movieListRef={movieListRef} />
+        <MovieList movieListRef={movieListRef} />
       </div>
     </div>
   );

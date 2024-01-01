@@ -5,30 +5,25 @@ import EmptyState from "./EmptyState";
 import { useDispatch, useSelector } from "react-redux";
 import { updateMovies } from "../../Redux/slices/movies.slice";
 import { getMoviesList } from "../../Redux/APIs/moviesAPI";
-import ResetSvg from "../../Assets/Icons/ResetSvg";
 
-const MovieList = () => {
+const MovieList = ({ movieListRef }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const {
-    moviesList,
-    previousFetchYear,
-    nextFetchYear,
-    enableEntryFetch,
-    fetchOlderMoviesCTA,
-  } = useSelector((state) => state.movies);
+  const { moviesList, previousFetchYear, nextFetchYear, enableEntryFetch } =
+    useSelector((state) => state.movies);
 
-  const observer = useRef();
-  const lastMovieRow = useCallback(
-    (node) => {
-      if (observer.current) {
-        observer.current.disconnect();
+  const lastRowObserver = useRef();
+  const scrollRefByYear = useRef([]);
+  let lastMovieRow = useCallback(
+    (lastNode) => {
+      if (lastRowObserver.current) {
+        lastRowObserver.current.disconnect();
       }
 
-      observer.current = new IntersectionObserver((entries) => {
+      lastRowObserver.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting && nextFetchYear !== 2023) {
-          // console.log(node, "last row visible");
+          // console.log(lastNode, "last row visible");
           // setYear((prev) => prev + 1);
 
           dispatch(
@@ -43,8 +38,8 @@ const MovieList = () => {
         }
       });
 
-      if (node) {
-        observer.current.observe(node);
+      if (lastNode) {
+        lastRowObserver.current.observe(lastNode);
       }
     },
 
@@ -57,28 +52,29 @@ const MovieList = () => {
 
   const handleScroll = async (e) => {
     let element = e.target;
-    console.log(e, "checkelement");
+    console.log(e, "check e");
     if (enableEntryFetch) {
       if (element.scrollTop === 0) {
-        dispatch(updateMovies({ key: "fetchOlderMoviesCTA", value: true }));
-        dispatch(updateMovies({ key: "fetchInReverseOrder", value: true }));
-        dispatch(
+        await dispatch(
           getMoviesList({
             year: previousFetchYear - 1,
           }),
         );
-        dispatch(
+        await dispatch(
           updateMovies({
             key: "previousFetchYear",
             value: previousFetchYear - 1,
           }),
         );
-        setTimeout(() => {
-          dispatch(updateMovies({ key: "fetchOlderMoviesCTA", value: false }));
-        }, 200);
+
+        if (scrollRefByYear?.current.length > 0) {
+          console.log(previousFetchYear, "check prev year");
+          scrollRefByYear?.current[previousFetchYear]?.scrollIntoView({
+            block: "center",
+          });
+        }
+        setTimeout(() => {}, 200);
         console.log("time to fetch older movies");
-      } else {
-        dispatch(updateMovies({ key: "fetchInReverseOrder", value: false }));
       }
     }
   };
@@ -87,23 +83,20 @@ const MovieList = () => {
 
   return (
     <div
-      className="h-full pt-[80px] pb-[80px] md:pb-[160px] overflow-y-scroll scroll-hide"
+      className="h-full pt-[80px] pb-[80px] md:pb-[160px] mx-2 md:ml-10 overflow-y-scroll scroll-hide"
       onScroll={handleScroll}
+      ref={movieListRef}
     >
       <div className="pb-8 md:pb-10 primary-layout">
-        {fetchOlderMoviesCTA && (
-          <div className="flex gap-x-4 items-center justify-center">
-            <ResetSvg size={24} className="text-grey-10" />
-            <p className="text-grey-10 font-normal text-2xl">
-              Fetching Older Movies
-            </p>
-          </div>
-        )}
-        {moviesList?.map((movie, index) => (
-          <div key={index}>
-            <p className="mt-6 text-grey-10 font-semibold md:font-normal text-2xl px-4 md:px-12">
+        {moviesList?.map((movie) => (
+          <div key={`title-start-${movie.year}`}>
+            <div
+              key={`title-${movie.year}`}
+              className="mt-6 text-grey-10 font-semibold md:font-normal text-2xl px-4"
+              ref={(ref) => (scrollRefByYear.current[movie.year] = ref)}
+            >
               {movie.year}
-            </p>
+            </div>
 
             <div className="mt-4 md:mt-8 flex items-center justify-center gap-6 flex-wrap">
               {movie.list.length === 0 ? (
@@ -112,25 +105,26 @@ const MovieList = () => {
                 movie.list.map((item, index) => {
                   return (
                     <>
-                      {movie.list.length === index + 1 && enableEntryFetch ? (
-                        <div key={item.id} ref={lastMovieRow}>
-                          <CustomCard
-                            title={item.title}
-                            image={item.poster_path}
-                            ratings={item.vote_average}
-                            onClick={() => handleClick(item)}
-                          />
-                        </div>
-                      ) : (
-                        <div key={item.id}>
-                          <CustomCard
-                            title={item.title}
-                            image={item.poster_path}
-                            ratings={item.vote_average}
-                            onClick={() => handleClick(item)}
-                          />
-                        </div>
-                      )}
+                      <div
+                        key={item.title}
+                        ref={(ref) => {
+                          if (
+                            index !== movie.list.length - 1 ||
+                            !enableEntryFetch
+                          ) {
+                            return null;
+                          }
+                          lastMovieRow(ref);
+                        }}
+                      >
+                        <CustomCard
+                          title={item.title}
+                          image={item.poster_path}
+                          ratings={item.vote_average}
+                          onClick={() => handleClick(item)}
+                        />
+                      </div>
+                      )
                     </>
                   );
                 })

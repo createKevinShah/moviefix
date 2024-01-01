@@ -6,25 +6,28 @@ import { getFilteredMovies, getMoviesList } from "../Redux/APIs/moviesAPI";
 import CrossSvg from "../Assets/Icons/CrossSvg";
 import SearchSvg from "../Assets/Icons/SearchSvg";
 
-const CustomSearch = ({ placeholder = "Search Movies" }) => {
+const CustomSearch = ({ placeholder = "Search Movies", movieListRef }) => {
   const dispatch = useDispatch();
   const { defaultYear } = useSelector((state) => state.movies);
   const [search, setSearch] = useState(null);
 
-  // function scrollToTop() {
-  //   if (typeof window === "undefined") return;
-  //   window.scrollTo({ top: 0, behavior: "smooth" });
-  // }
-
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       dispatch(updateMovies({ key: "searchQuery", value: search }));
+
       if (search !== null && search !== "") {
         dispatch(getFilteredMovies(search));
         dispatch(updateMovies({ key: "enableEntryFetch", value: false }));
+        movieListRef?.current.scroll({
+          top: 0,
+          behavior: "smooth",
+        });
       } else {
         if (search !== null) {
-          dispatch(updateMovies({ key: "moviesList", value: [] }));
+          movieListRef?.current.scroll({
+            top: "2px",
+            behavior: "smooth",
+          });
           dispatch(updateMovies({ key: "enableEntryFetch", value: true }));
           dispatch(getMoviesList({ year: defaultYear }));
         }
