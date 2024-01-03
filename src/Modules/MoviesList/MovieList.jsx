@@ -40,7 +40,7 @@ const MovieList = ({ movieListRef }) => {
       }
     },
 
-    [nextFetchYear],
+    [dispatch, nextFetchYear],
   );
 
   const handleClick = (currentMovie) => {
@@ -74,8 +74,6 @@ const MovieList = ({ movieListRef }) => {
     }
   };
 
-  console.log(moviesList, "check movies");
-
   return (
     <div
       className="h-full pt-[80px] pb-[80px] md:pb-[160px] mx-2 md:ml-10 overflow-y-scroll scroll-hide"
@@ -84,18 +82,17 @@ const MovieList = ({ movieListRef }) => {
     >
       <div className="pb-8 md:pb-10 primary-layout">
         {moviesList?.map((movie, index) => {
-          console.log(`title-${movie.year}-${index}`);
           return (
             <div key={`title-start-${movie.year}-${index}}`}>
               <div
-                className="mt-6 text-grey-10 font-semibold md:font-normal text-2xl px-4"
+                className="px-4 mt-6 text-2xl font-semibold text-grey-10 md:font-normal"
                 ref={(ref) => (scrollRefByYear.current[movie.year] = ref)}
                 key={`title-${movie.year}-${index}`}
               >
                 {movie.year}
               </div>
 
-              <div className="mt-4 md:mt-8 flex items-center justify-center gap-6 flex-wrap">
+              <div className="flex flex-wrap items-center justify-center gap-6 mt-4 md:mt-8">
                 {movie.list.length === 0 ? (
                   <EmptyState />
                 ) : (

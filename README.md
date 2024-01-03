@@ -1,70 +1,62 @@
-# Getting Started with Create React App
+Moviefix
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+1. Introduction:
+   A movie information app that displays a list of movies from The Movie Database (TMDb) API.
+   The app shows top movies for each year and users can filter by genre, and search through movie name.
+   The app also loads top movies from previous / next years as the user scrolls through the list.
 
-## Available Scripts
+2. Requirements:
+   i. Display the list of 20 movies for each year
+   ii. Infinite scroll pagination for fetching movies of next year and previous year
+   iii. Filter movies based on genres
+   iv. Display movie details including - movie poster, title, tagline, runtime, description, director, cast, and genres.
 
-In the project directory, you can run:
+Additonal functionality -
+Search movie based on movie title
 
-### `npm start`
+3. Features:
+   Movies Page (localhost:3000)
+   Default Display: The Movies Page showcases the top 20 movies, sorted by popularity in descending order, for the year 2012.
+   Infinite Scroll Pagination: Movies are dynamically fetched as the user scrolls, presenting a seamless experience.
+   Year-wise Fetching: Scrolling below the last row fetches movies for the next year (up to 2023), while scrolling above the current movies fetches those from the previous year.
+   Search Functionality: A search box allows users to find movies based on titles which also contains a clear button to reset the input.
+   Genre Filters: Users can filter movies by genre preferences, with a reset button to clear all applied filters.
+   Clickable Movie Cards: Each movie card, featuring poster image, title, and user ratings, is clickable, directing users to the Movie Details Page.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Note:
+Search and filters operate independently due to API limitations.
+Filters are currently implemented with intersection of all the selected genres.
+(can be changed to union by using the pipe operator to separate the selected genres)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Movie Details Page (localhost:3000/movie/:id)
+Detailed Movie Information: This page offers a comprehensive view, including the movie poster, title, tagline, runtime, description, director, cast, and genres.
+Scrollable Cast Section: The cast of the movie is presented in a scrollable element.
 
-### `npm test`
+API endpoints:
+Movies are fetched from this API - `https://api.themoviedb.org/3/discover/movie`
+Genres are fetched from this API - `https://api.themoviedb.org/3/genre/movie/list`
+Search movies uses this API - `https://api.themoviedb.org/3/search/movie`
+Movie details are fetched from this API - `https://api.themoviedb.org/3/movie/${movieId}`
+where movie id represents the id of the selected movie
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+For rendering all the images, we use the API - `https://image.tmdb.org/t/p/w780${posterImageUrl}`
+where posterImageUrl represents the poster URL obtained in the API response.
 
-### `npm run build`
+4. Setup:
+   Pre requisites: node - https://nodejs.org/en/download/
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Steps to run the App locally -
+Step 1:
+Clone the git repo using the command `git clone https://github.com/createKevinShah/moviefix`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Step 2:
+Go to the project folder - cd moviefix
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Step 3:
+Install the necessary dependencies and package using the command `npm i`
 
-### `npm run eject`
+Step 4:
+Run the app using the command `npm start`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Step 5:
+Access locally - Navigate to `localhost:3000` in your browser.

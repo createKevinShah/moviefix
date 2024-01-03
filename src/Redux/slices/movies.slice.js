@@ -116,8 +116,6 @@ export const moviesSlice = createSlice({
     builder.addCase(getMoviesDetails.fulfilled, (state, action) => {
       state.loading = false;
       state.status = "fulfilled";
-
-      console.log(action.payload, "check movie details payload");
       state.currentMovieDetails = action.payload;
     });
     builder.addCase(getMoviesDetails.rejected, (state, action) => {
