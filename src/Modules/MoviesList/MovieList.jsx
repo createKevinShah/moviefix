@@ -99,7 +99,7 @@ const MovieList = ({ movieListRef }) => {
                   movie.list.map((item, index) => {
                     return (
                       <div
-                        key={item.title}
+                        key={item.id}
                         ref={(ref) => {
                           if (
                             index !== movie.list.length - 1 ||

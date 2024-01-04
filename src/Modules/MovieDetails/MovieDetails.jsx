@@ -23,15 +23,15 @@ const Cast = ({ credits }) => {
                 <img
                   src={`${process.env.REACT_APP_POSTER_URL}${person.profile_path}`}
                   alt={person.name}
-                  className="w-full h-full object-contain"
+                  className="object-contain w-full h-full"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center">
+                <div className="flex items-center justify-center w-full h-full">
                   <BlankProfile />
                 </div>
               )}
             </div>
-            <p className="mt-3 max-w-40 text-center text-base font-normal">
+            <p className="mt-3 text-base font-normal text-center max-w-40">
               {person.name}
             </p>
             <p className="mt-0.5 max-w-40 text-center text-sm font-light">
@@ -66,7 +66,7 @@ const MovieDetails = () => {
 
   useEffect(() => {
     dispatch(getMoviesDetails({ movieId: id }));
-  }, [id]);
+  }, [id, dispatch]);
 
   return (
     <div className="bg-black w-full h-[100vh]">
@@ -77,7 +77,7 @@ const MovieDetails = () => {
             <Spin spinning />
           </div>
         ) : (
-          <div className="flex flex-col bg-black md:flex-row items-start px-4 md:px-0 gap-x-10 text-grey-10 font-normal">
+          <div className="flex flex-col items-start px-4 font-normal bg-black md:flex-row md:px-0 gap-x-10 text-grey-10">
             <div className="rounded-lg w-full md:w-[50%] h-full">
               <img
                 src={`${process.env.REACT_APP_POSTER_URL}${poster_path}`}
@@ -88,34 +88,34 @@ const MovieDetails = () => {
 
             <div className="w-full mt-4 md:mt-0 md:w-[50%] h-full md:h-[80vh] flex flex-col gap-y-2">
               <div>
-                <h2 className="font-medium text-3xl">{title}</h2>
-                <h3 className="mt-2 font-light text-xl italic text-grey-50">
+                <h2 className="text-3xl font-medium">{title}</h2>
+                <h3 className="mt-2 text-xl italic font-light text-grey-50">
                   {tagline}
                 </h3>
-                <div className="flex items-center gap-x-2 mt-3">
+                <div className="flex items-center mt-3 gap-x-2">
                   <RuntimeSvg className="text-grey-50" />
                   <p className="text-sm font-light">{totalRuntime}</p>
                 </div>
               </div>
               <div className="mt-3">
-                <p className="font-semibold text-xl">Description :</p>
-                <p className="text-base pt-1 text-justify md:text-left">
+                <p className="text-xl font-semibold">Description :</p>
+                <p className="pt-1 text-base text-justify md:text-left">
                   {overview}
                 </p>
               </div>
               <div className="mt-3">
-                <p className="font-semibold text-xl">Director :</p>
-                <p className="text-base pt-1">{getDirector(credits)}</p>
+                <p className="text-xl font-semibold">Director :</p>
+                <p className="pt-1 text-base">{getDirector(credits)}</p>
               </div>
-              <p className="font-semibold text-xl">Cast :</p>
+              <p className="text-xl font-semibold">Cast :</p>
               <div className="h-[50%] overflow-y-scroll scroll-hide">
                 <Cast credits={credits} />
               </div>
-              <p className="font-semibold text-xl mt-2">Genres :</p>
-              <div className="flex items-center flex-wrap gap-4 mb-8 md:mb-0">
+              <p className="mt-2 text-xl font-semibold">Genres :</p>
+              <div className="flex flex-wrap items-center gap-4 mb-8 md:mb-0">
                 {genres?.map((genre) => {
                   return (
-                    <div className="" key={genre.id}>
+                    <div key={genre.id}>
                       <CustomButton text={genre.name} disableSelection />
                     </div>
                   );

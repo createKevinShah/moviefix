@@ -67,6 +67,6 @@ Install the necessary dependencies and packages:
 Run the app:  
 `npm start`
 
-**Step 5:**  
+**Step 4:**  
 Access locally:  
 Navigate to `http://localhost:3000` in your browser.
