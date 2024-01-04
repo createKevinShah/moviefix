@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+  /* font-family: "Outfit", sans-serif; */
+  font-family: "Rubik", sans-serif;
+}
+
+.primary-layout {
+  width: 100%;
+  max-width: 70.8125rem;
+  margin: auto;
+}
+
+.scroll-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-hide {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+.ant-spin-dot-item {
+  background-color: red !important;
+}
